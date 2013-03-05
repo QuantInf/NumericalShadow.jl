@@ -23,7 +23,7 @@ function random_ket_real_entangled(s::Int)
   sqrts=int(sqrt(s))
   U1=random_orthogonal(sqrts)
   U2=random_orthogonal(sqrts)
-  state=zeros(Float64,(s,1))
+  state=zeros(Float,(s,1))
   for i=[1:sqrts]
       state+=vkron(U1[:,i],U2[:,i])
   end

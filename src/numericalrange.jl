@@ -27,6 +27,16 @@ function numerical_range(A::Matrix,resolution::FloatingPoint)
   return w
 end
 
+function get_bounding_box(A::Matrix)
+    reA=(A+A')/2.0
+    imA=-1im*(A-A')/2.0
+    reEig::Float=eig(reA)[1]
+    imEig::Float=eig(imA)[1]
+    mx,Mx,my,My=min(reEig), max(reEig), min(imEig), max(imEig)
+    return [mx,Mx,my,My]
+end
+
+
 function numerical_range(A::Matrix)
   return numerical_range(A::Matrix,0.01)
 end

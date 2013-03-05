@@ -38,3 +38,7 @@ end
 function histogram2d(data::Matrix)
   return histogram2d(data,[min(data[:,1]),max(data[:,1])], [min(data[:,2]),max(data[:,2])],10,10)
 end
+
+function histogram2d(data::Matrix, xdensity::Int, ydensity::Int)
+  return histogram2d(data,[min(data[:,1]),max(data[:,1])], [min(data[:,2]),max(data[:,2])],xdensity,ydensity)
+end
