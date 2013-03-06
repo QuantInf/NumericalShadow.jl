@@ -9,36 +9,58 @@ function mkron(m1::Matrix,m2::Matrix)
   return reshape(transpose(kron(v1,v1)),(newdim1,newdim2))
 end
 
-function histogram2d(data::Matrix,xlimits::Vector,ylimits::Vector,xbins::Int,ybins::Int)
-  h=zeros(Int,xbins,ybins)
-  dx=abs(xlimits[2]-xlimits[1])
-  dy=abs(ylimits[2]-ylimits[1])
-  xmin,xmax=min(xlimits),max(xlimits)
-  ymin,ymax=min(ylimits),max(ylimits)
-  datasize=size(data)[1]
-
-  Dx=data[:,1]
-  Dy=data[:,2]
-  X = linspace(xmin,xmax,xbins)
-  Y = linspace(ymin,ymax,ybins)
-
-  for i=1:datasize
-    xbin::Int=searchsortedlast(X,Dx[i])
-    ybin::Int=searchsortedlast(Y,Dy[i])
-    if (xbin>0) && (xbin<=xbins) && (ybin>0) && (ybin<=ybins) 
-      h[xbin,ybin]+=1
-    else
-      println("at ",i," ",xbin," ",ybin, " ",data[i,:])
-      println("wrong bin")
+function histogram2d(data::Matrix,edgx::Vector,edgy::Vector)
+    nx = length(edgx)
+    ny = length(edgy)
+    h = zeros(Int, nx, ny)
+    if nx == 0 || ny == 0
+        return h
     end
-  end
-  return h
+    firstx = edgx[1]
+    lastx = edgx[nx]
+    firsty = edgy[1]
+    lasty = edgy[ny]
+
+    for i=1:size(data)[1]
+      x,y=data[i,:]
+        if !isless(lastx, x) && !isless(x, firstx) && !isless(lasty, y) && !isless(y, firsty)
+            i = searchsortedlast(edgx, x)
+            j = searchsortedlast(edgy, y)
+            h[i,j] += 1
+        end
+    end
+    return h
 end
 
-function histogram2d(data::Matrix)
-  return histogram2d(data,[min(data[:,1]),max(data[:,1])], [min(data[:,2]),max(data[:,2])],10,10)
-end
+function histogram2d(data::Matrix, xlimits::Vector,ylimits::Vector, xbins::Integer, ybins::Integer)
+    h = zeros(Int, xbins, ybins)
+    if xbins == 0 || ybins == 0
+        return h
+    end
+    lox, hix = min(data[:,1]), max(data[:,1])
+    loy, hiy = min(data[:,2]), max(data[:,2])
+    lox, hix = xlimits
+    loy, hiy = ylimits
 
-function histogram2d(data::Matrix, xdensity::Int, ydensity::Int)
-  return histogram2d(data,[min(data[:,1]),max(data[:,1])], [min(data[:,2]),max(data[:,2])],xdensity,ydensity)
+    if lox == hix
+        lox -= div(xbins,2)
+        hix += div(xbins,2) + int(isodd(xbins))
+    end
+    if loy == hiy
+        loy -= div(ybins,2)
+        hiy += div(ybins,2) + int(isodd(ybins))
+    end
+    
+    binszx = (hix - lox) / xbins
+    binszy = (hiy - loy) / ybins
+
+    for i=1:size(data)[1]
+        x,y=data[i,:]
+        if isfinite(x) && isfinite(y)
+            i = iround((x - lox) / binszx + 0.5)
+            j = iround((y - loy) / binszy + 0.5)
+            h[i > xbins ? xbins : i, j > ybins ? ybins : j] += 1
+        end
+    end
+    return h
 end
