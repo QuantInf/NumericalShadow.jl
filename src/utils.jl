@@ -22,7 +22,7 @@ function histogram2d(data::Matrix,xlimits::Vector,ylimits::Vector,xbins::Int,ybi
   X = linspace(xmin,xmax,xbins)
   Y = linspace(ymin,ymax,ybins)
 
-  for i=[1:datasize]
+  for i=1:datasize
     xbin::Int=searchsortedlast(X,Dx[i])
     ybin::Int=searchsortedlast(Y,Dy[i])
     if (xbin>0) && (xbin<=xbins) && (ybin>0) && (ybin<=ybins) 
