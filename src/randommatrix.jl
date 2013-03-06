@@ -3,8 +3,7 @@ function random_unitary(n::Integer)
      q,r = qr(complex128(z))
      d = diag(r)
      ph = d./abs(d)
-     ret = q.*repmat(ph,1,size(ph)[1])'
-     return ret 
+     return q.*repmat(ph,1,size(ph)[1])'
 end
 
 function random_orthogonal(n::Integer)
@@ -12,6 +11,5 @@ function random_orthogonal(n::Integer)
      q,r = qr(z)
      d = diag(r)
      ph = d./abs(d)
-     ret = q.*repmat(ph,1,size(ph)[1])'
-     return ret
+     return q.*repmat(ph,1,size(ph)[1])'
 end

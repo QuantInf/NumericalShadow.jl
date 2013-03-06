@@ -12,8 +12,8 @@ function random_ket_complex_entangled(s::Int)
   sqrts=int(sqrt(s))
   U1=random_unitary(sqrts)
   U2=random_unitary(sqrts)
-  state=zeros(Complex128,s)
-  for i=1:sqrts
+  state=zeros(Complex,(s,1))
+  for i=[1:sqrts]
       state+=vkron(U1[:,i],U2[:,i])
   end
   return (1.0/sqrt(sqrts))*state
@@ -23,8 +23,8 @@ function random_ket_real_entangled(s::Int)
   sqrts=int(sqrt(s))
   U1=random_orthogonal(sqrts)
   U2=random_orthogonal(sqrts)
-  state=zeros(Float64,s)
-  for i=1:sqrts
+  state=zeros(Float,(s,1))
+  for i=[1:sqrts]
       state+=vkron(U1[:,i],U2[:,i])
   end
   return (1.0/sqrt(sqrts))*state
