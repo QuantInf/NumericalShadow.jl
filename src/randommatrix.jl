@@ -13,3 +13,13 @@ function random_orthogonal(n::Integer)
      ph = d./abs(d)
      return q.*repmat(ph,1,size(ph)[1])'
 end
+
+function random_GOE(n::Integer)
+    H=randn(n,n)
+    return (H+H')/2
+end
+
+function random_GUE(n::Integer)
+    H=randn(n,n)+1im*randn(n,n)
+    return (H+H')/2
+end

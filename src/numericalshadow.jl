@@ -1,15 +1,51 @@
 function numerical_shadow(M::Matrix,sampling_function::Function,samples::Int, xdensity::Int, ydensity::Int)
-  pts=zeros(Complex128,samples)
+  samples_per_run=10000
+  runs=div(samples,samples_per_run)+1
+  println(runs)
+  reminder=mod(samples,samples_per_run)
+  println(reminder)
+  pts=zeros(Complex128,samples_per_run)
   M=complex(M)
   s=size(M)[1]
-  for i=1:samples
-    v=sampling_function(s)
-    pt=(v'*M*v)
-    pts[i]=pt[1]
-  end
-  data=hcat(real(pts),imag(pts))
+  hist=zeros(Int64,xdensity,ydensity)
   bb=get_bounding_box(M)
-  return histogram2d(data,bb[1:2],bb[3:4],xdensity,ydensity)
+  
+  if ishermitian(M) && sampling_function==NumericalShadow.random_ket_complex
+    ev=eigvals(M)
+    run=1
+    while run<=runs
+      smp=samples_per_run
+      if run==runs
+	smp=reminder
+	pts=zeros(Complex128,smp)
+      end
+      for i=1:smp
+	v=sampling_function(s)
+	pt=(v'*(ev.*v))
+	pts[i]=pt[1]
+      end
+      hist+=histogram2d(hcat(real(pts),imag(pts)),bb[1:2],bb[3:4],xdensity,ydensity)
+      run+=1      
+      println(sum(hist))
+    end
+  else # not hermitian
+    run=1
+    while run<=runs
+      smp=samples_per_run
+      if run==runs
+	smp=reminder
+	pts=zeros(Complex128,smp)
+      end
+      for i=1:smp
+	v=sampling_function(s)
+	pt=(v'*M*v)
+	pts[i]=pt[1]
+      end
+      hist+=histogram2d(hcat(real(pts),imag(pts)),bb[1:2],bb[3:4],xdensity,ydensity)
+      run+=1
+    end
+  end
+  return hist
 end
 
 function numerical_shadow_parallel(M::Matrix,sampling_function::Function,samples::Int, xdensity::Int, ydensity::Int)
