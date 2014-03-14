@@ -30,6 +30,14 @@ function random_ket_real_entangled(s::Int)
   return (1.0/sqrt(sqrts))*state
 end
 
+function random_ket_complex_nfold(s::Int)
+  sqrts=int(sqrt(s))
+  U=random_unitary(sqrts)
+  state=zeros(Float,(s,1))
+  state[1]=1
+  return mkron(U,U)*state
+end 
+
 function random_ket_complex_separable(s::Int)
   sqrts=int(sqrt(s))
   return vkron(random_ket_complex(sqrts),random_ket_complex(sqrts))
