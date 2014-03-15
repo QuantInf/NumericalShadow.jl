@@ -1,3 +1,3 @@
-# Library calculating numerical shadow in Julia language
+# Library for calculating numerical shadow in Julia language
 
 See [Numerical shadow](http://numericalshadow.org).
