@@ -87,19 +87,19 @@ function main()
 
 
       h5open(joinpath(directory, output_filename), "w") do file
-        g = g_create(file, "/") 
-        g["source"]="julia"
-        g["version"]="0.1"
-        g["matrix_re"] = real(M)
-        g["matrix_im"] = imag(M)
-        g["random_state_function"] = function_name
-        g["samples"] = samples
-        g["xdensity"] = xdensity
-        g["ydensity"] = ydensity
-        g["bounding_box"] = bounding_box
-        g["matrix_latex"] = matrix_latex
-        g["matrix_id"] = matrix_id
-        g["histogram"] = histogram
+        #g = g_create(file, "/") 
+        file["source"]="julia"
+        file["version"]="0.1"
+        file["matrix_re"] = real(M)
+        file["matrix_im"] = imag(M)
+        file["random_state_function"] = function_name
+        file["samples"] = samples
+        file["xdensity"] = xdensity
+        file["ydensity"] = ydensity
+        file["bounding_box"] = bounding_box
+        file["matrix_latex"] = matrix_latex
+        file["matrix_id"] = matrix_id
+        file["histogram"] = histogram
       end
 
 
