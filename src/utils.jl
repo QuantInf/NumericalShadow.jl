@@ -37,8 +37,8 @@ function histogram2d(data::Matrix, xlimits::Vector,ylimits::Vector, xbins::Integ
     if xbins == 0 || ybins == 0
         return h
     end
-    lox, hix = min(data[:,1]), max(data[:,1])
-    loy, hiy = min(data[:,2]), max(data[:,2])
+    lox, hix = minimum(data[:,1]), maximum(data[:,1])
+    loy, hiy = minimum(data[:,2]), maximum(data[:,2])
     lox, hix = xlimits
     loy, hiy = ylimits
 
