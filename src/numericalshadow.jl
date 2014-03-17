@@ -16,6 +16,7 @@ function numerical_shadow(M::Matrix,sampling_function::Function,samples::Int, xd
     while run<=runs
       smp=samples_per_run
       if run==runs
+        if reminder==0 break end
 	smp=reminder
 	pts=zeros(Complex128,smp)
       end
@@ -33,6 +34,7 @@ function numerical_shadow(M::Matrix,sampling_function::Function,samples::Int, xd
     while run<=runs
       smp=samples_per_run
       if run==runs
+      	if reminder==0 break end
 	smp=reminder
 	pts=zeros(Complex128,smp)
       end
