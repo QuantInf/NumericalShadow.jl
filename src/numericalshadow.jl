@@ -56,9 +56,9 @@ function numerical_shadow_parallel(M::Matrix,sampling_function::Function,samples
   refs={}
   for id=1:nprocs()
     if id==1
-      remote_ref=remote_call(id, numerical_shadow,M,sampling_function,samples_for_first_proc, xdensity, ydensity)
+      remote_ref=remotecall(id, numerical_shadow,M,sampling_function,samples_for_first_proc, xdensity, ydensity)
     else
-      remote_ref=remote_call(id, numerical_shadow,M,sampling_function,samples_per_process, xdensity, ydensity)
+      remote_ref=remotecall(id, numerical_shadow,M,sampling_function,samples_per_process, xdensity, ydensity)
     end
     append!(refs,{remote_ref})
   end
@@ -89,9 +89,9 @@ function numerical_shadow_diagonal_parallel(M::Matrix, eigs::Array,samples::Int,
   refs={}
   for id=1:nprocs()
     if id==1
-      remote_ref=remote_call(id, numerical_shadow_diagonal,M,eigs,samples_for_first_proc, xdensity, ydensity)
+      remote_ref=remotecall(id, numerical_shadow_diagonal,M,eigs,samples_for_first_proc, xdensity, ydensity)
     else
-      remote_ref=remote_call(id, numerical_shadow_diagonal,M,eigs,samples_per_process, xdensity, ydensity)
+      remote_ref=remotecall(id, numerical_shadow_diagonal,M,eigs,samples_per_process, xdensity, ydensity)
     end
     append!(refs,{remote_ref})
   end
