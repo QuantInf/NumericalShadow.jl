@@ -1,14 +1,3 @@
-function vkron(v1::Vector,v2::Vector)
-  newdim=size(v1)[1]*size(v2)[1]
-  return reshape(transpose(kron(v1,v1)),(newdim,1))
-end
-
-function mkron(m1::Matrix,m2::Matrix)
-  newdim1=size(m1)[1]*size(m2)[1]
-  newdim2=size(m1)[2]*size(m2)[2]
-  return reshape(transpose(kron(v1,v1)),(newdim1,newdim2))
-end
-
 function histogram2d(data::Matrix,edgx::Vector,edgy::Vector)
     nx = length(edgx)
     ny = length(edgy)
