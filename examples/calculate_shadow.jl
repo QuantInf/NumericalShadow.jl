@@ -85,21 +85,24 @@ function main()
       println("Calculation took: "*string(toc())*" seconds.")
       println("I used: "*string(nprocs())*" procesors.")
 
-      fid = HDF5.h5open(joinpath(directory, output_filename), "w")
 
-      fid["source"]="julia"
-      fid["version"]="0.1"
-      fid["matrix_re"] = real(M)
-      fid["matrix_im"] = imag(M)
-      fid["random_state_function"] = function_name
-      fid["samples"] = samples
-      fid["xdensity"] = xdensity
-      fid["ydensity"] = ydensity
-      fid["bounding_box"] = bounding_box
-      fid["matrix_latex"] = matrix_latex
-      fid["matrix_id"] = matrix_id
-      fid["histogram"] = histogram
-      HDF5.close(fid)
+      h5open(joinpath(directory, output_filename), "w") do file
+        g = g_create(file, "/") 
+        g["source"]="julia"
+        g["version"]="0.1"
+        g["matrix_re"] = real(M)
+        g["matrix_im"] = imag(M)
+        g["random_state_function"] = function_name
+        g["samples"] = samples
+        g["xdensity"] = xdensity
+        g["ydensity"] = ydensity
+        g["bounding_box"] = bounding_box
+        g["matrix_latex"] = matrix_latex
+        g["matrix_id"] = matrix_id
+        g["histogram"] = histogram
+      end
+
+
     end
 end
 
