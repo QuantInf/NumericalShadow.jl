@@ -92,13 +92,13 @@ function main()
         file["version"]="0.1"
         file["matrix_re"] = real(M)
         file["matrix_im"] = imag(M)
-        file["random_state_function"] = function_name
+        file["random_state_function"] = ""*function_name # ugly hack to obtain string
         file["samples"] = samples
         file["xdensity"] = xdensity
         file["ydensity"] = ydensity
         file["bounding_box"] = bounding_box
-        file["matrix_latex"] = matrix_latex
-        file["matrix_id"] = matrix_id
+        file["matrix_latex"] = ""*matrix_latex
+        file["matrix_id"] = ""*matrix_id
         file["histogram"] = histogram
       end
 
