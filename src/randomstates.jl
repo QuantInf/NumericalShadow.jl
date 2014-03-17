@@ -14,7 +14,7 @@ function random_ket_complex_entangled(s::Int)
   U2=random_unitary(sqrts)
   state=zeros(Complex,(s,1))
   for i=[1:sqrts]
-      state+=vkron(U1[:,i],U2[:,i])
+      state+=kron(U1[:,i],U2[:,i])
   end
   return (1.0/sqrt(sqrts))*state
 end
@@ -25,7 +25,7 @@ function random_ket_real_entangled(s::Int)
   U2=random_orthogonal(sqrts)
   state=zeros(Complex,(s,1))
   for i=[1:sqrts]
-      state+=vkron(U1[:,i],U2[:,i])
+      state+=kron(U1[:,i],U2[:,i])
   end
   return (1.0/sqrt(sqrts))*state
 end
@@ -35,7 +35,7 @@ function random_ket_complex_bifold_separable(s::Int)
   U=random_unitary(sqrts)
   state=zeros(Complex,(s,1))
   state[1]=1
-  return mkron(U,U)*state
+  return kron(U,U)*state
 end 
 
 function random_ket_real_bifold_separable(s::Int)
@@ -43,17 +43,17 @@ function random_ket_real_bifold_separable(s::Int)
   U=random_orthogonal(sqrts)
   state=zeros(FloatingPoint,(s,1))
   state[1]=1
-  return mkron(U,U)*state
+  return kron(U,U)*state
 end 
 
 function random_ket_complex_separable(s::Int)
   sqrts=int(sqrt(s))
-  return vkron(random_ket_complex(sqrts),random_ket_complex(sqrts))
+  return kron(random_ket_complex(sqrts),random_ket_complex(sqrts))
 end
 
 function random_ket_real_separable(s::Int)
   sqrts=int(sqrt(s))
-  return vkron(random_ket_real(sqrts),random_ket_real(sqrts))
+  return kron(random_ket_real(sqrts),random_ket_real(sqrts))
 end
 
 function random_mixed_state(s::Int)
