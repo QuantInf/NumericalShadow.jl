@@ -9,9 +9,10 @@ function get_sampling_f_from_name(sfn::String)
   if sfn=="random_ket_real_entangled" return NumericalShadow.random_ket_real_entangled end
   if sfn=="random_ket_real_separable" return NumericalShadow.random_ket_real_separable end
   if sfn=="random_ket_complex_separable" return NumericalShadow.random_ket_complex_separable end
+  if sfn=="random_ket_real_bifold_separable" return NumericalShadow.random_ket_real_bifold_separable end
+  if sfn=="random_ket_complex_bifold_separable" return NumericalShadow.random_ket_complex_bifold_separable end
   return error("No such function")
 end
-
 
 function parse_commandline()
     s = ArgParse.ArgParseSettings()
