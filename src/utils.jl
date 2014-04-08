@@ -21,7 +21,7 @@ function histogram2d(data::Matrix,edgx::Vector,edgy::Vector)
     return h
 end
 
-function histogram2d(data::Matrix, xlimits::Vector,ylimits::Vector, xbins::Integer, ybins::Integer)
+function hist2d(data::Matrix, xlimits::Vector,ylimits::Vector, xbins::Integer, ybins::Integer)
     h = zeros(Int, xbins, ybins)
     if xbins == 0 || ybins == 0
         return h

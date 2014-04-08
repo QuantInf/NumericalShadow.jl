@@ -1,3 +1,9 @@
+function numerical_shadow(M::Hermitian, sampling_function::Function,samples::Int, density::Int)
+end
+
+function numerical_shadow{T<:FloatingPoint}(M::Diagonal{T}, sampling_function::Function,samples::Int, density::Int)
+end
+
 function numerical_shadow(M::Matrix,sampling_function::Function,samples::Int, xdensity::Int, ydensity::Int)
   samples_per_run=10000
   runs=div(samples,samples_per_run)+1
