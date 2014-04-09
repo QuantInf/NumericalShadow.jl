@@ -1,7 +1,26 @@
-function numerical_shadow(M::Hermitian, sampling_function::Function,samples::Int, density::Int)
+type BoundingBox
+  minx::Real
+  maxx::Real
+  miny::Real
+  maxy::Real
+  BoundingBox(dims::Vector{Real}) = new(dims)
+  BoundingBox(dims::Real...) = new([dims...])
 end
 
-function numerical_shadow{T<:FloatingPoint}(M::Diagonal{T}, sampling_function::Function,samples::Int, density::Int)
+type Histogram{T}
+  data::Array{Real, T}
+  bounding_box::BoundingBox
+  Histogram{T}() = new(zeros(Real, T), BoundingBox(0, 0, 0, 0))
+  Histogram{T}(data::Array{Real, T}, bounding_box::BoundingBox) = new(data, bounding_box)
+end
+
+function numerical_shadow(M::Matrix, random_state::RandomState, samples::Integer, xdensity::Integer, ydensity::Integer)
+end
+
+function numerical_shadow(M::Hermitian, , random_state::RandomState, samples::Integer, density::Integer)
+end
+
+function numerical_shadow{T<:FloatingPoint}(M::Diagonal{T}, random_state::RandomState,  samples::Integer, density::Integer)
 end
 
 function numerical_shadow(M::Matrix,sampling_function::Function,samples::Int, xdensity::Int, ydensity::Int)

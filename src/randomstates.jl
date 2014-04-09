@@ -1,16 +1,26 @@
-type Ket{T}
-  dim::Int
+abstract RandomState
+
+type Ket{T} <: RandomState
+  dim::Int64
 end
 
-type KetMaxBipartEntangled{T}
-  dim::Int
+type KetMaxBipartEntangled{T} <: RandomState
+  dim::Int64
 end
 
-type KetSeparable{T}
+type KetSeparable{T} <: RandomState
   dims::Vector{Int64}
   
   KetSeparable(dims::Vector{Int64}) = new(dims)
   KetSeparable(dims::Int64...) = new([dims...])
+end
+
+type KetBifoldSeparable{T} <: RandomState
+  dim::Int64
+end
+
+type DensityMatrix <: RandomState
+  dim::Int64
 end
 
 function rand{T}(d::KetSeparable{T})
@@ -49,24 +59,24 @@ function rand{T<:Real}(d::KetMaxBipartEntangled{T})
   return (1.0/sqrt(sqrts))*state
 end
 
-function random_ket_complex_bifold_separable(s::Int)
-  sqrts=int(sqrt(s))
+function  rand{T<:Complex}(d::KetBifoldSeparable{T})
+  sqrts=int(sqrt(d.dim))
   U=random_unitary(sqrts)
-  state=zeros(Complex,(s,1))
+  state=zeros(T,(d.dim,1))
   state[1]=1
   return kron(U,U)*state
 end 
 
-function random_ket_real_bifold_separable(s::Int)
-  sqrts=int(sqrt(s))
+function  rand{T<:Real}(d::KetBifoldSeparable{T})
+  sqrts=int(sqrt(d.dim))
   U=random_orthogonal(sqrts)
-  state=zeros(FloatingPoint,(s,1))
+  state=zeros(T,(d.dim,1))
   state[1]=1
   return kron(U,U)*state
 end 
 
-function random_mixed_state(s::Int)
-  G=randn(s,s)+1im*randn(s,s)
+function rand(d::DensityMatrix)
+  G=randn(d.dim,d.dim)+1im*randn(d.dim,d.dim)
   GGH=G*G'
   return GGH/trace(GGH)
 end
