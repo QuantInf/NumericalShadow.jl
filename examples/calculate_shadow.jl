@@ -66,6 +66,7 @@ function main()
     
     for l in lines
       matrix_id=csv[l,1]
+			println(matrix_id)
       M=complex128(eval(parse(csv[l,2])))
       function_name=csv[l,3]
       samples=int(csv[l,4])
@@ -75,12 +76,18 @@ function main()
       bounding_box=NumericalShadow.get_bounding_box(M)
       matrix_latex=repr(M)
       tic()
-      histogram=NumericalShadow.numerical_shadow_parallel(
-		M,get_sampling_f_from_name(function_name),
-		samples, xdensity, ydensity
-		)
-      
-      output_filename="histrogram-"*matrix_id*"-"*function_name*"-"*string(samples)*".hd5"
+      if length(procs())>1
+        histogram=NumericalShadow.numerical_shadow_parallel(
+                    M,get_sampling_f_from_name(function_name),
+                    samples, xdensity, ydensity
+                    )
+      else
+        histogram=NumericalShadow.numerical_shadow(
+                    M,get_sampling_f_from_name(function_name),
+                    samples, xdensity, ydensity
+                    )
+      end
+      output_filename="histogram-"*matrix_id*"-"*function_name*"-"*string(samples)*".hd5"
       
       println("Saving: "*output_filename)
       println("Calculation took: "*string(toc())*" seconds.")
