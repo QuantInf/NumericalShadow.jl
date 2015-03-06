@@ -29,6 +29,11 @@ function numerical_shadow(M::Matrix,sampling_function::Function,samples::Int, xd
       run+=1      
       println(sum(hist))
     end
+  elseif ishermitian(M) && sampling_function==NumericalShadow.random_ket_real
+    hist1d = [numerical_shadow_real_integrated(M, xdensity)]
+    println("tu jestem")
+    hist = reshape(hist1d,size(hist1d)[1],1)
+    println(typeof(hist))
   else # not hermitian
     run=1
     while run<=runs
@@ -101,4 +106,22 @@ function numerical_shadow_diagonal_parallel(M::Matrix, eigs::Array,samples::Int,
     hist+=fetch(remote_ref)
   end
   return hist
+end
+
+integral(a::Vector, t, u)=sin(0.5 * sum(atan((a .- t) .* u))) / (u * (prod(1 .+ (a .- t) .^ 2 * u ^ 2)) ^ 0.25)
+
+function real_distribution(eigvs::Vector, xs)
+#    Implemented according to doi:10.1088/1751-8113/45/41/415309 ; equation 11
+    maxevals = 1000
+    y = Float64[quadgk(u->integral(eigvs, t, u), 0.0, Inf; maxevals = maxevals)[1] for t in xs]
+    y = 0.5 .- y ./ pi
+    return diff(y)
+end
+
+function numerical_shadow_real_integrated(M::Matrix, xdensity::Int=1000)
+    bb = get_bounding_box(M)
+    println(bb)
+    eigvs = eigvals(Hermitian(M))
+    xs = linspace(bb[1],bb[2],xdensity + 1) #because of diff later
+    return real_distribution(eigvs, xs)
 end
