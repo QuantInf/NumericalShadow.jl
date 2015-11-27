@@ -1,7 +1,7 @@
 using Tensors
 using FactCheck
 
-my_tests = ["hosvd.jl"]
+my_tests = ["numericalrange.jl"]
 
 println("Running tests:")
 

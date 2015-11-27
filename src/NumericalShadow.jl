@@ -4,8 +4,6 @@ module NumericalShadow
 #, plot_shadow
 
   include(joinpath(Pkg.dir(), "NumericalShadow", "src", "numericalrange.jl"))
-  include(joinpath(Pkg.dir(), "NumericalShadow", "src", "randomstates.jl"))
-  include(joinpath(Pkg.dir(), "NumericalShadow", "src", "randommatrix.jl"))
   include(joinpath(Pkg.dir(), "NumericalShadow", "src", "utils.jl"))
   include(joinpath(Pkg.dir(), "NumericalShadow", "src", "numericalshadow.jl"))
 

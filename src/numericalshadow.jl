@@ -1,3 +1,21 @@
+type NumericalShadow{T, S}
+  M::Matrix
+  f::Function
+  hist::S
+  bounding_box::Vector{Float64}
+
+  function call{T}(::Type{NumericalShadow}, ::Type{T}, M::Matrix, f::Function)
+    if ishermitian(M) && T <: Complex
+      S = Complex128
+    elseif ishermitian(M) && T <: Real
+      S = Float64
+    else
+      S = Complex128
+    end
+    new{T, S}(M, f, S[])
+  end
+end
+
 function numerical_shadow(M::Matrix,sampling_function::Function,samples::Int, xdensity::Int, ydensity::Int)
   samples_per_run=10000
   runs=div(samples,samples_per_run)+1
@@ -9,7 +27,7 @@ function numerical_shadow(M::Matrix,sampling_function::Function,samples::Int, xd
   s=size(M)[1]
   hist=zeros(Int64,xdensity,ydensity)
   bb=get_bounding_box(M)
-  
+
   if ishermitian(M) && sampling_function==NumericalShadow.random_ket_complex
     ev=eigvals(M)
     run=1
@@ -26,7 +44,7 @@ function numerical_shadow(M::Matrix,sampling_function::Function,samples::Int, xd
 	pts[i]=pt[1]
       end
       hist+=histogram2d(hcat(real(pts),imag(pts)),bb[1:2],bb[3:4],xdensity,ydensity)
-      run+=1      
+      run+=1
       println(sum(hist))
     end
   elseif ishermitian(M) && sampling_function==NumericalShadow.random_ket_real
@@ -58,7 +76,7 @@ end
 function numerical_shadow_parallel(M::Matrix,sampling_function::Function,samples::Int, xdensity::Int, ydensity::Int)
   samples_per_process=div(samples,nprocs())
   samples_for_first_proc=samples_per_process+mod(samples,nprocs())
-  
+
   hist=zeros(Int64,xdensity,ydensity)
   refs={}
   for id=1:nprocs()
@@ -91,7 +109,7 @@ end
 function numerical_shadow_diagonal_parallel(M::Matrix, eigs::Array,samples::Int, xdensity::Int, ydensity::Int)
   samples_per_process=div(samples,nprocs())
   samples_for_first_proc=samples_per_process+mod(samples,nprocs())
-  
+
   hist=zeros(Int64,xdensity,ydensity)
   refs={}
   for id=1:nprocs()
