@@ -1,10 +1,10 @@
 type NumericalShadow{T, S}
   M::Matrix
-  f::Function
+  f::Symbol
   hist::S
   bounding_box::Vector{Float64}
 
-  function call{T}(::Type{NumericalShadow}, ::Type{T}, M::Matrix, f::Function)
+  function call{T}(::Type{NumericalShadow}, ::Type{T}, M::Matrix, f::Symbol)
     if ishermitian(M) && T <: Complex
       S = Complex128
     elseif ishermitian(M) && T <: Real
@@ -14,6 +14,11 @@ type NumericalShadow{T, S}
     end
     new{T, S}(M, f, S[])
   end
+end
+
+function sample{T}(S::NumericalShadow{T})
+  ϕ = eval(S.f)(T, size(S.M, 1))
+  push!(S.hist, (ϕ' * S.M * ϕ)) #FIXME
 end
 
 function numerical_shadow(M::Matrix,sampling_function::Function,samples::Int, xdensity::Int, ydensity::Int)
