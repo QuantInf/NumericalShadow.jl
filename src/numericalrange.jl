@@ -19,7 +19,7 @@ function numerical_range(A::Matrix,resolution::FloatingPoint)
       p=rr[:,sm[1]]'*r[:,s]'*A*r[:,s]*rr[:,sm[1]]
       w=[w,p]
       mM=maximum(ee)
-      sm=findin(ee,mM)
+      sM=findin(ee,mM)
       p=rr[:,sM[1]]'*r[:,s]'*A*r[:,s]*rr[:,sM[1]]
       w=[w,p]
     end
