@@ -33,7 +33,7 @@ function get_bounding_box(A::Matrix)
     reEig::Vector=eigvals(reA)
     imEig::Vector=eigvals(imA)
     mx,Mx,my,My=minimum(reEig), maximum(reEig), minimum(imEig), maximum(imEig)
-    return [mx,Mx,my,My].*1.05 ## Ugly hack
+    return [mx,Mx,my,My]
 end
 
 function numerical_range(A::Matrix)
