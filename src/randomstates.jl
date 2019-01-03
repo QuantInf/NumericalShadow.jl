@@ -36,7 +36,7 @@ function random_ket_complex_bifold_separable(s::Int)
   state=zeros(Complex,(s,1))
   state[1]=1
   return kron(U,U)*state
-end 
+end
 
 function random_ket_real_bifold_separable(s::Int)
   sqrts=int(sqrt(s))
@@ -44,7 +44,7 @@ function random_ket_real_bifold_separable(s::Int)
   state=zeros(FloatingPoint,(s,1))
   state[1]=1
   return kron(U,U)*state
-end 
+end
 
 function random_ket_complex_separable(s::Int)
   sqrts=int(sqrt(s))

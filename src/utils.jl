@@ -9,7 +9,7 @@
 #     lastx = edgx[nx]
 #     firsty = edgy[1]
 #     lasty = edgy[ny]
-# 
+#
 #     for i=1:size(data)[1]
 #       x,y=data[i,:]
 #         if !isless(lastx, x) && !isless(x, firstx) && !isless(lasty, y) && !isless(y, firsty)
@@ -21,9 +21,10 @@
 #     return h
 # end
 
-function histogram2d(data::Matrix, xlimits::Vector,ylimits::Vector, xbins::Integer, ybins::Integer)
-    h = hist2d(data, linspace(xlimits[1],xlimits[2],xbins+1),linspace(ylimits[1],ylimits[2],ybins+1))
-    return h[3]
+function histogram2d(data::Matrix, xrange, yrange)
+    fit(Histogram, (data[:,1], data[:,2]), (xrange, yrange))
+    # h = hist2d(data, linspace(xlimits[1],xlimits[2],xbins+1),linspace(ylimits[1],ylimits[2],ybins+1))
+    # return h[3]
 end
 # function histogram2d(data::Matrix, xlimits::Vector,ylimits::Vector, xbins::Integer, ybins::Integer)
 #     h = zeros(Int, xbins, ybins)
@@ -34,7 +35,7 @@ end
 #     loy, hiy = minimum(data[:,2]), maximum(data[:,2])
 #     lox, hix = xlimits
 #     loy, hiy = ylimits
-# 
+#
 #     if lox == hix
 #         lox -= div(xbins,2)
 #         hix += div(xbins,2) + int(isodd(xbins))
@@ -43,10 +44,10 @@ end
 #         loy -= div(ybins,2)
 #         hiy += div(ybins,2) + int(isodd(ybins))
 #     end
-#     
+#
 #     binszx = (hix - lox) / xbins
 #     binszy = (hiy - loy) / ybins
-# 
+#
 #     for i=1:size(data)[1]
 #         x,y=data[i,:]
 #         if isfinite(x) && isfinite(y)

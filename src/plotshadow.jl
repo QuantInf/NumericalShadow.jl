@@ -1,11 +1,11 @@
 # using Winston
 
-function plot_shadow(M::Matrix,data::Matrix)
-  bb=get_bounding_box(M)
-  xrange=bb[1:2]
-  yrange=bb[3:4]
-  clims=(min(data),max(data))
-  nr=numerical_range(M)
+function plot_shadow(M::Matrix, data::Matrix)
+  bb = get_bounding_box(M)
+  xrange = bb[1:2]
+  yrange = bb[3:4]
+  clims = (min(data),max(data))
+  nr = numericalrange(M)
   p = Winston.FramedPlot()
   setattr(p, "xrange", xrange)
   setattr(p, "yrange", reverse(yrange))
